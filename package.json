@@ -20,5 +20,8 @@
   "license": "ISC",
   "devDependencies": {
     "vite": "^4.3.9"
+  },
+  "dependencies": {
+    "papaparse": "^5.4.1"
   }
 }
