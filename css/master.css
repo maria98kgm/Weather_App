@@ -47,10 +47,17 @@ body {
   background-color: #c3d1e622;
 }
 
-.card h3 {
+.card-title {
   text-align: center;
   text-transform: capitalize;
   margin: 0;
+  white-space: nowrap;
+}
+
+.card-date {
+  text-align: center;
+  margin: 1rem 0 0;
+  font-size: 0.9em;
 }
 
 .weather-icon {

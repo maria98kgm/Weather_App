@@ -29,6 +29,9 @@ function getWeatherData(event) {
     .then((res) => res.json())
     .then((res) => displayWeather(res.dataseries, [latitude, longtitude]))
     .catch((err) => console.log(err));
+
+  const defaultOption = document.querySelector("#default-option");
+  defaultOption.disabled = true;
 }
 
 function displayWeather(data, location) {
@@ -40,19 +43,26 @@ function displayWeather(data, location) {
   weatherTitle.textContent = `Weather forecast for ${selectedOption.textContent}`;
 
   for (let i in data) {
-    weatherContainer.append(createWeatherCard(data[i]));
+    weatherContainer.append(createWeatherCard(data[i], +i));
   }
 }
 
-function createWeatherCard(data) {
+function createWeatherCard(data, count) {
   const card = document.createElement("div");
   card.classList.add("card");
 
   const cardTitle = document.createElement("h3");
-  cardTitle.textContent = data.weather;
+  cardTitle.textContent = getWeatherName(data.weather);
+  cardTitle.classList.add("card-title");
+
+  const date = new Date();
+  date.setDate(date.getDate() + count);
+  const cardDate = document.createElement("p");
+  cardDate.textContent = formatDate(date);
+  cardDate.classList.add("card-date");
 
   const cardImage = document.createElement("img");
-  cardImage.src = `../images/${data.weather}.svg`;
+  cardImage.src = `../images/${data.weather === "humid" ? "fog" : data.weather}.svg`;
   cardImage.alt = data.weather;
   cardImage.classList.add("weather-icon");
 
@@ -82,7 +92,7 @@ function createWeatherCard(data) {
   minContainer.append(minTemperatureLabel, minTemperature);
   cardTemperature.append(minContainer, maxContainer);
 
-  card.append(cardTitle, cardImage, cardTemperature);
+  card.append(cardTitle, cardDate, cardImage, cardTemperature);
 
   let clicked = false;
   card.addEventListener("click", () => {
@@ -92,4 +102,34 @@ function createWeatherCard(data) {
   });
 
   return card;
+}
+
+function formatDate(date) {
+  const options = { weekday: "short", year: "numeric", month: "long", day: "numeric" };
+  return date.toLocaleDateString("en-us", options);
+}
+
+function getWeatherName(shortName) {
+  switch (shortName) {
+    case "ishower":
+      return "Isolated shower";
+    case "lightrain":
+      return "light rain";
+    case "lightsnow":
+      return "light snow";
+    case "mcloudy":
+      return "cloudy";
+    case "pcloudy":
+      return "partly cloudy";
+    case "oshower":
+      return "occasional shower";
+    case "rainsnow":
+      return "mixed";
+    case "tstorm":
+      return "thunderstorm possible";
+    case "tsrain":
+      return "thunderstorm";
+    default:
+      return shortName;
+  }
 }
