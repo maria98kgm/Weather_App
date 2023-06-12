@@ -23,12 +23,20 @@ function getWeatherData(event) {
   const coords = event.target.value;
   const [latitude, longtitude] = coords.split(":");
 
+  const weatherContainer = document.querySelector("#weather-container");
+  const loader = document.createElement("div");
+  loader.classList.add("loader");
+
+  weatherContainer.replaceChildren();
+  weatherContainer.append(loader);
+
   fetch(
     `https://www.7timer.info/bin/civillight.php?lon=${longtitude}&lat=${latitude}&ac=0&unit=metric&output=json&tzshift=0`
   )
     .then((res) => res.json())
     .then((res) => displayWeather(res.dataseries, [latitude, longtitude]))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(() => loader.remove);
 
   const defaultOption = document.querySelector("#default-option");
   defaultOption.disabled = true;
@@ -94,11 +102,14 @@ function createWeatherCard(data, count) {
 
   card.append(cardTitle, cardDate, cardImage, cardTemperature);
 
-  let clicked = false;
+  if (count === 0) card.classList.add("active");
+
   card.addEventListener("click", () => {
-    clicked = !clicked;
-    if (clicked) card.classList.add("active");
-    else card.classList.remove("active");
+    document
+      .querySelector("#weather-container")
+      .querySelectorAll(".card")
+      .forEach((item) => item.classList.remove("active"));
+    card.classList.add("active");
   });
 
   return card;
