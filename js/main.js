@@ -54,6 +54,7 @@ function createWeatherCard(data) {
   const cardImage = document.createElement("img");
   cardImage.src = `../images/${data.weather}.svg`;
   cardImage.alt = data.weather;
+  cardImage.classList.add("weather-icon");
 
   const cardTemperature = document.createElement("div");
   const maxContainer = document.createElement("div");
@@ -61,8 +62,8 @@ function createWeatherCard(data) {
 
   const maxTemperatureLabel = document.createElement("p");
   const minTemperatureLabel = document.createElement("p");
-  maxTemperatureLabel.textContent = "MAX Temp";
-  minTemperatureLabel.textContent = "MIN Temp";
+  maxTemperatureLabel.textContent = "MAX";
+  minTemperatureLabel.textContent = "MIN";
 
   const maxTemperature = document.createElement("p");
   const minTemperature = document.createElement("p");
@@ -82,6 +83,13 @@ function createWeatherCard(data) {
   cardTemperature.append(minContainer, maxContainer);
 
   card.append(cardTitle, cardImage, cardTemperature);
+
+  let clicked = false;
+  card.addEventListener("click", () => {
+    clicked = !clicked;
+    if (clicked) card.classList.add("active");
+    else card.classList.remove("active");
+  });
 
   return card;
 }
