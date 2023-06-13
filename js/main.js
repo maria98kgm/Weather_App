@@ -70,7 +70,8 @@ function createWeatherCard(data, count) {
   cardDate.classList.add("card-date");
 
   const cardImage = document.createElement("img");
-  cardImage.src = `../images/${data.weather === "humid" ? "fog" : data.weather}.svg`;
+  const location = document.location;
+  cardImage.src = `${location}/images/${data.weather === "humid" ? "fog" : data.weather}.svg`;
   cardImage.alt = data.weather;
   cardImage.classList.add("weather-icon");
 

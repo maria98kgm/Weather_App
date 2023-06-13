@@ -161,3 +161,9 @@ body {
     opacity: 0.25;
   }
 }
+
+@media (max-width: 1200px) {
+  #weather-container {
+    flex-wrap: wrap;
+  }
+}
